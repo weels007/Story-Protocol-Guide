@@ -89,21 +89,43 @@ WantedBy=multi-user.target
 EOF
 ```
 
-## create story service file
+# Cosmovisor Setup
+
+## Install Cosmovisor:
 ```
-sudo tee /etc/systemd/system/story.service > /dev/null <<EOF
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@latest
+echo "export DAEMON_NAME="story"" >> $HOME/.bash_profile
+echo "export DAEMON_HOME="$HOME/.story/story"" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+cosmovisor init $(which story)
+```
+
+## Create a directory and download the current version of story
+```
+mkdir -p $HOME/.story/story/cosmovisor/upgrades/v0.12.1/bin
+wget -O $HOME/.story/story/cosmovisor/upgrades/v0.12.1/bin/story https://github.com/piplabs/story/releases/download/v0.12.1/story-linux-amd64
+chmod +x $HOME/.story/story/cosmovisor/upgrades/v0.12.1/bin/story
+```
+
+## Update service file
+```
+sudo tee /etc/systemd/system/story.service > /dev/null << EOF
 [Unit]
-Description=Story Service
-After=network.target
+Description=story node service
+After=network-online.target
 
 [Service]
 User=$USER
-WorkingDirectory=$HOME/.story/story
-ExecStart=$(which story) run
-
+Environment="DAEMON_NAME=story"
+Environment="DAEMON_HOME=$HOME/.story/story"
+Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
+Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="DAEMON_DATA_BACKUP_DIR=$HOME/.story/story/data"
+ExecStart=$(which cosmovisor) run run
 Restart=on-failure
-RestartSec=5
+RestartSec=10
 LimitNOFILE=65535
+
 [Install]
 WantedBy=multi-user.target
 EOF
@@ -113,12 +135,15 @@ EOF
 ```
 sudo systemctl daemon-reload
 sudo systemctl enable story story-geth
-sudo systemctl restart story-geth && sleep 5 && sudo systemctl restart story
+sudo systemctl restart story-geth && sudo systemctl restart story
 ```
 
 ## check logs
 ```
 journalctl -u story -u story-geth -f
+```
+```
+journalctl -u story -f -o cat
 ```
 
 # Create a validator
