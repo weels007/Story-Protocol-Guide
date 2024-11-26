@@ -102,9 +102,9 @@ cosmovisor init $(which story)
 
 ## Create a directory and download the current version of story
 ```
-mkdir -p $HOME/.story/story/cosmovisor/upgrades/v0.12.1/bin
-wget -O $HOME/.story/story/cosmovisor/upgrades/v0.12.1/bin/story https://github.com/piplabs/story/releases/download/v0.12.1/story-linux-amd64
-chmod +x $HOME/.story/story/cosmovisor/upgrades/v0.12.1/bin/story
+mkdir -p $HOME/.story/story/cosmovisor/upgrades/v0.13.0/bin
+wget -O $HOME/.story/story/cosmovisor/upgrades/v0.13.0/bin/story https://github.com/piplabs/story/releases/download/v0.13.0/story-linux-amd64
+chmod +x $HOME/.story/story/cosmovisor/upgrades/v0.13.0/bin/story
 ```
 
 ## Update service file
