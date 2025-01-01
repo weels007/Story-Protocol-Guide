@@ -31,7 +31,7 @@ source $HOME/.bash_profile
 ## story-geth
 ```
 cd
-wget -O story-geth https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64
+wget -O story-geth https://github.com/piplabs/story-geth/releases/download/v0.11.0/geth-linux-amd64
 chmod +x story-geth
 mv story-geth $HOME/go/bin/story-geth
 ```
