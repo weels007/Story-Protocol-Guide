@@ -1,4 +1,4 @@
-# Story-Protocol-Guide
+# Story-Node-Guide
 
 ## install dependencies, if needed
 ```
